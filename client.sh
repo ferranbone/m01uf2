@@ -9,3 +9,6 @@ then
 	echo "ERROR"
 	exit 1
 fi
+echo "Dime nombre del archivo"
+read FILE_NAME
+echo "FILE_NAME $FILE_NAME" | nc 127.0.0.1 $PORT
