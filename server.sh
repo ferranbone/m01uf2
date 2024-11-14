@@ -11,4 +11,9 @@ then
 fi
 echo "2. CHECK OK - Enviando OK_HEADER"
 echo "OK_HEADER" | nc localhost 2022
-echo $DATA | cut -f 1 | nc localhost 2022
+FILE_DATA='nc -l $PORT'
+PREFIX='echo $FILE_DATA | cut -d " " -f 3'
+if [ "$PREFIX" == "FILE_NAME" ]
+then
+	echo "Archivo recibido: $FILE_NAME"
+fi
