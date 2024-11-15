@@ -11,9 +11,15 @@ then
 fi
 echo "2. CHECK OK - Enviando OK_HEADER"
 echo "OK_HEADER" | nc localhost 2022
-FILE_DATA='nc -l $PORT'
-PREFIX='echo $FILE_DATA | cut -d " " -f 3'
-if [ "$PREFIX" == "FILE_NAME" ]
+FILE_DATA=$(nc -l $PORT)
+PREFIJO=$(echo $FILE_DATA | cut -d " " -f 1)
+echo "5. COMPROBANDO"
+if [ "$PREFIJO" != "FILE_NAME" ]
 then
-	echo "Archivo recibido: $FILE_NAME"
-fi
+	echo "ERROR 2: Prefijo incorrecto"
+	echo "KO_FILE_NAME" | nc localhost $PORT
+	exit 2
+fi 
+
+echo "6. ENVIANDO OK_FILE_NAME"
+echo "OK_FILE_NAME" | nc localhost $PORT
