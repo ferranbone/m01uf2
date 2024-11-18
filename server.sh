@@ -23,3 +23,9 @@ fi
 
 echo "6. ENVIANDO OK_FILE_NAME"
 echo "OK_FILE_NAME" | nc localhost $PORT
+
+DATA=`nc -l $PORT`
+
+FILE_NAME=$(cat nombre.txt)
+echo "$DATA" > server/$FILE_NAME
+cat server/$FILE_NAME
