@@ -38,6 +38,28 @@ echo "OK_FILE_NAME" | nc $IP $PORT
 
 DATA=$(nc -l $PORT)
 
-FILE_NAME=$(cat nombre.txt)
-echo "$DATA" > server/$FILE_NAME
-cat server/$FILE_NAME
+echo "7. RECIBIENDO CONTENIDO"
+cat > server/$FILE_NAME
+echo "OK_DATA" | nc $IP $PORT
+
+echo "8. CALCULANDO MD5 DEL CONTENIDO DEL ARCHIVO"
+FILE MD5=$(md5sum server/$FILE_NAME | cut -d " " -f 1)
+DATA=`nc -l $PORT`
+PREFIJO_MD5=$(echo $DATA | cut -d " " -f 1)
+MD5_RECIBIDO=$(echo $DATA | cut -d " " -f 2)
+
+if [ "$PREFIJO_MD5" != "FILE_MD5" ]
+then
+echo "ERROR 4: Prefijo FILE_MD5 incorrecto"
+echo "KO_FILE_MD5" | nc $IP $PORT
+exit 4
+fi
+
+if [ "MD5_RECIBIDO" != "$FILE_MD5" ]
+then
+echo "ERROR 5: El MD5 del contenido no coincide"
+echo "KO_FILE_MD5" | nc $IP $PORT
+exit 5
+fi
+
+echo "OK_FILE_MD5" | nc $IP $PORT
