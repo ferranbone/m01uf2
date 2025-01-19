@@ -29,3 +29,15 @@ fi
 echo "8. ENVIANDO CONTENIDO"
 
 cat client/$FILE_NAME | nc $IP_SERVER $PORT
+
+echo "9. RECIBIENDO OK_DATA"
+DATA=`nc -l $PORT´
+if [ "$DATA" != "OK_DATA" ]
+then
+echo "ERROR 3: No se ha recibido OK_DATA"
+exit 3
+fi
+
+echo "10. CALCULANDO MD5 DEL CONTENIDO DEL ARCHIVO"
+FILE_MD5=$(md5sum client/$FILE_NAME | cut -d " " -f 1)
+echo "FILE_MD5 $FILE_MD5" | nc $IP_SERVER $PORT
