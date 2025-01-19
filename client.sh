@@ -14,8 +14,9 @@ then
 fi
 echo "4. COMPROBANDO HEADER"
 read FILE_NAME
-echo "FILE_NAME" > nombre.txt
-echo "FILE_NAME $FILE_NAME" | nc $IP_SERVER $PORT
+HASH=$(echo -n "$FILE_NAME" | md5sum | cut -d " " -f 1)
+echo "FILE_NAME $FILE_NAME $HASH" | nc $IP_SERVER $PORT
+
 echo "7. RECIBIENDO"
 DATA=`nc -l $PORT`
 
